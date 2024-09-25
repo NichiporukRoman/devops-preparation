@@ -6,4 +6,4 @@
 
 ## <a id="comands">Commands</a>
 
-### run
+### name
