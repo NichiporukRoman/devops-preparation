@@ -6,31 +6,60 @@ import java.util.Deque;
 // Calculator.java
 public class Calculator {
 
-    public float add(float a, float b) {
+    /**
+     * Returns summ of two numbers.
+     * @param  a first value in summ
+     * @param  b second value in summ
+     * @return   summ of two numbers
+     */
+    public float add(final float a, final float b) {
         return a + b;
     }
 
-    public float subtract(float a, float b) {
+    /**
+     * Returns difference of two numbers.
+     * @param  a first value in subtraction
+     * @param  b second value in subtraction
+     * @return   difference of two numbers
+     */
+    public float subtract(final float a, final float b) {
         return a - b;
     }
 
-    public float multiply(float a, float b) {
+    /**
+     * Returns product of two numbers.
+     * @param  a first value in product
+     * @param  b second value in product
+     * @return   product of two numbers
+     */
+    public float multiply(final float a, final float b) {
         return a * b;
     }
 
-    public float divide(float a, float b) {
+    /**
+     * Returns division of two numbers.
+     * @param  a first value in division
+     * @param  b second value in division
+     * @return   division of two numbers
+     */
+    public float divide(final float a, final float b) {
         if (b == 0) {
             throw new IllegalArgumentException("Cannot divide by zero!");
         }
         return a / b;
     }
 
-    public float calculate(String input) {
+    /**
+     * Returns evaluated example.
+     * @param  input math example that we need to solve
+     * @return       answer that we get from solving example
+     */
+    public float calculate(final String input) {
         String postfix = infixToPostfix(input);
         return evaluatePostfix(postfix);
     }
 
-    private String infixToPostfix(String input) {
+    private String infixToPostfix(final String input) {
     StringBuilder postfix = new StringBuilder();
     Deque<Character> operatorStack = new ArrayDeque<>();
 
@@ -38,7 +67,8 @@ public class Calculator {
         if (Character.isDigit(c)) {
             postfix.append(c).append(" ");
         } else if (isOperator(c)) {
-            while (!operatorStack.isEmpty() && precedence(operatorStack.peek()) >= precedence(c)) {
+            while (!operatorStack.isEmpty()
+            && precedence(operatorStack.peek()) >= precedence(c)) {
                 postfix.append(operatorStack.pop()).append(" ");
             }
             operatorStack.push(c);
@@ -59,11 +89,11 @@ public class Calculator {
     return postfix.toString().trim();
 }
 
-private boolean isOperator(char c) {
+private boolean isOperator(final char c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-private int precedence(char operator) {
+private int precedence(final char operator) {
     switch (operator) {
         case '+':
         case '-':
@@ -76,7 +106,7 @@ private int precedence(char operator) {
     }
 }
 
-    private float evaluatePostfix(String postfix) {
+    private float evaluatePostfix(final String postfix) {
         Deque<Float> stack = new ArrayDeque<>();
         String[] tokens = postfix.split("\\s+");
 
@@ -96,6 +126,8 @@ private int precedence(char operator) {
                         break;
                     case "/":
                         stack.push(divide(a, b));
+                        break;
+                    default:
                         break;
                 }
             } else {

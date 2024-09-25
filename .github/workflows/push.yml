@@ -20,3 +20,6 @@ jobs:
 
     - name: Running tests with Maven...
       run: mvn test
+
+    - name: Linting with Checkstyle
+      run: mvn checkstyle:check
