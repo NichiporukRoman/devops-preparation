@@ -1,9 +1,12 @@
 # Github-Actions
 ## Сontent
-### 1. [Commands](#comands)
+### 1. [Indexes](#indexes)
 
 ### 2. d 
 
-## <a id="comands">Commands</a>
+## <a id="indexes">Indexes</a>
 
 ### name
+```
+name 
+```
