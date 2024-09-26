@@ -1,6 +1,6 @@
-# NginX
+# Ansible
 ## Instalation
 To install NginX use comand:
 ```
-sudo apt-get install nginx
+pipx install --include-deps ansible
 ```

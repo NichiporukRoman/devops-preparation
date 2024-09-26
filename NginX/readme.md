@@ -2,5 +2,5 @@
 ## Instalation
 To install NginX use comand:
 ```
-sudo apt-get install nginx
+sudo apt-get install nginx  
 ```
