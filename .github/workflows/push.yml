@@ -4,6 +4,8 @@ on:
   push:
     branches: 
       - 'dev-github-actions'
+    # paths-ignore:
+    #   - '.github/workflows/*'
   
   pull_request:
     branches: 
@@ -12,30 +14,53 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-22.04
+    strategy: 
+      matrix:
+        java-versions: [8, 17]
+        os: [ubuntu-22.04, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
 
     - name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
-        java-version: 17
+        java-version: ${{ matrix.java-versions }}
 
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     - name: Running tests with Maven...
       run: mvn test
   lint:
-    runs-on: ubuntu-22.04
+    strategy: 
+      matrix:
+        java-versions: [8, 17]
+        os: [ubuntu-22.04, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
 
     - name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
-        java-version: 17
+        java-version: ${{ matrix.java-versions }}
 
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     - name: Linting with Checkstyle
       run: mvn clean checkstyle:check
   build:
+    needs: [lint, test]
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
@@ -45,5 +70,21 @@ jobs:
       with:
         java-version: 17
 
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     - name: Building with Maven...
       run: mvn -B clean package
+    - name: Upload Artifacts. 
+      uses: actions/upload-artifact@v3
+      with:
+        path: target
+        name: build-files
+    - name: Download Artifacts. 
+      uses: actions/download-artifact@v3
+      with:
+        name: build-files
