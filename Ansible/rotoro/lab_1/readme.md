@@ -1,3 +1,5 @@
+# Lab 1: YML/YAML
+
 ## Task 1
 Дан dictionary со свойством property1 и значением value1
 Добавь новое свойство property2 и значение value2.

@@ -1,0 +1,7 @@
+services:
+  web:
+    image: "helpme"
+    ports:
+      - "8000:5000"
+  redis:
+    image: "redis:alpine"

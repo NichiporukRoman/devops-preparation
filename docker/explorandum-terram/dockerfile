@@ -1,0 +1,20 @@
+FROM ubuntu
+
+RUN apt-get update && apt-get install -y openjdk-17-jdk
+RUN apt-get install -y git
+RUN apt install maven -y
+
+RUN git clone https://github.com/NichiporukRoman/ExplorandumTerram.git
+
+WORKDIR /ExplorandumTerram
+
+RUN mvn clean install 
+
+COPY /ExplorandumTerram/target/*.war explorandum-terram.war
+
+RUN jar -xvf explorandum-terram.war
+
+RUN cd WEB-INF
+
+RUN java -classpath "lib/*:classes/." my.packages.destination.FileToRun
+
